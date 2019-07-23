@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Some commands I use to compile and run the test suite
+
+g++ -ggdb -frounding-math -DMAXORDER=40 -I. -I${HOME}/lib/filib-3.0.2/include \
+    -I/usr/include -I$(pwd)/aaflib-0.1 -fpermissive -std=c++11 -c testsuite.cpp
+
+g++ -L/usr/lib -L$(pwd)/aaflib-0.1 -L${HOME}/lib/filib-3.0.2/lib -o testsuite \
+    testsuite.o -laaf -lprim -lgsl -llapack -lblas -lcblas -lstdc++ \
+    -lboost_unit_test_framework
+
+./testsuite --log_level=test_suite

@@ -1,0 +1,9 @@
+testsuite
+main
+aaflib-0.1/libaaf.so
+*.o
+aaflib-0.1/*.o
+cmake-build-debug/
+output/
+CMakeLists.txt
+.idea
