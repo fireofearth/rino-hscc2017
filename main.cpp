@@ -92,29 +92,28 @@ int main(int argc, char* argv[]) {
     vector<AAF> x(sysdim);
     vector<AAF> xcenter(sysdim);
 
-    for (current_subdiv=1; current_subdiv <= nb_subdiv_init; current_subdiv++) {
-        if (nb_subdiv_init > 1) init_subdiv(current_subdiv, inputs_save, 0);
-        current_iteration = 0;
+    current_subdiv = 1;
+    current_iteration = 0;
 
-        cout << "center_inputs[0]" << center_inputs[0] << endl;
-        cout << "center_inputs[1]" <<  center_inputs[1] << endl;
-        cout << inputs[0] << endl;
-        cout << inputs[1] << endl;
+    cout << "center_inputs[0]" << center_inputs[0] << endl;
+    cout << "center_inputs[1]" << center_inputs[1] << endl;
+    cout << inputs[0] << endl;
+    cout << inputs[1] << endl;
 
-        set_initialconditions(x,xcenter,J);  //            setId(J0);
+    set_initialconditions(x, xcenter, J);  //            setId(J0);
 
-        tn = t_begin;
-        print_initstats(inputs);
+    tn = t_begin;
+    print_initstats(inputs);
 
-        HybridStep_ode cur_step = init_ode(odef,xcenter,x,J,tn,tau,order);
+    HybridStep_ode cur_step = init_ode(odef, xcenter, x, J, tn, tau, order);
 
-        while (cur_step.tn < t_end) {
-            // build Taylor model for Value and Jacobian and deduce guards for each active mode
-            cur_step.TM_build();
-            cur_step.TM_evalandprint_solutionstep(eps,cur_step.tn+tau);
-            cur_step.init_nextstep(tau);
-        }
+    while (cur_step.tn < t_end) {
+        // build Taylor model for Value and Jacobian and deduce guards for each active mode
+        cur_step.TM_build();
+        cur_step.TM_evalandprint_solutionstep(eps, cur_step.tn + tau);
+        cur_step.init_nextstep(tau);
     }
+
     print_finalsolution(inputs_save, (t_end-t_begin)/tau, d0);
     
     print_finalstats(begin);

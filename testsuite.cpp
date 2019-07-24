@@ -14,6 +14,9 @@ using namespace std;
 namespace utf = boost::unit_test;
 
 /**
+ * This test suite is mainly used to run operations on affine forms and get
+ * their coefficients to compare against Julia implementation.
+ *
  * Requires Boost.Test. If using Linux then install using your package manager.
  * To compile (and run) use these commands:
 
@@ -31,6 +34,38 @@ g++ -L/usr/lib -L$(pwd)/aaflib-0.1 -L${HOME}/lib/filib-3.0.2/lib -o testsuite \
  * TODO: use a proper Makefile
  */
 BOOST_AUTO_TEST_SUITE(test_aaf, * utf::tolerance(0.00001))
+
+    BOOST_AUTO_TEST_CASE( test_sine ) {
+        unsigned len = 5;
+        // AAF 1
+        double center1 = 26.10;
+        double dev1[] {2.11, -3.03, 4.59, 1.0, -10.};
+        unsigned ind1[] {1,3,5,8,10};
+        AAF a1(center1, dev1, ind1, len);
+        AAF o1 = sin(a1);
+        o1.aafprint();
+        cout << "coefficients:" << endl;
+        cout.precision(17);
+        for(int ii = 0; ii < o1.getlength()+1; ii++)
+            cout << o1[ii] << endl;
+        cout << "-------------" << endl;
+    }
+
+    BOOST_AUTO_TEST_CASE( test_cosine ) {
+        unsigned len = 5;
+        // AAF 1
+        double center1 = 26.10;
+        double dev1[] {2.11, -3.03, 4.59, 1.0, -10.};
+        unsigned ind1[] {1,3,5,8,10};
+        AAF a1(center1, dev1, ind1, len);
+        AAF o1 = cos(a1);
+        o1.aafprint();
+        cout << "coefficients:" << endl;
+        cout.precision(17);
+        for(int ii = 0; ii < o1.getlength()+1; ii++)
+            cout << o1[ii] << endl;
+        cout << "-------------" << endl;
+    }
 
     BOOST_AUTO_TEST_CASE( test_inverse ) {
         unsigned len = 5;
@@ -55,13 +90,7 @@ BOOST_AUTO_TEST_SUITE(test_aaf, * utf::tolerance(0.00001))
         double dev1[] {-3.33, 9.0, -1.5, 5.25};
         unsigned ind1[] {2, 3, 5, 6};
         AAF a1(center1, dev1, ind1, len);
-        AAF o1 = inv(a1);
-        o1.aafprint();
-        cout << "coefficients:" << endl;
-        cout.precision(17);
-        for(int ii = 0; ii < o1.getlength()+1; ii++)
-            cout << o1[ii] << endl;
-        cout << "-------------" << endl;
+        BOOST_CHECK_THROW(inv(a1), AAF_Exception);
     }
 
     BOOST_AUTO_TEST_CASE( test_power ) {

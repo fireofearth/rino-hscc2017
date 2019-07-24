@@ -47,6 +47,9 @@ extern vector<bool> is_initialcondition; // for each input, initial condition or
 extern int variable;  // number of non constant parameters
 extern vector<bool> is_variable; // for each parameter, constant or variable
 
+/**
+ * Colin: struct stores initialization variables
+ */
 struct OdeInit {
     int sysdim;
     int jacdim;
@@ -58,6 +61,9 @@ struct OdeInit {
     vector<AAF> inputs;
 };
 
+/**
+ * Colin: class representing ODE function f where x' = f(x)
+ */
 class OdeFunc {
 private:
     Problem p;
@@ -155,7 +161,7 @@ public:
                 yp[0] = (0.5 - y[1]) * y[0];
                 yp[1] = (-0.5 + y[0]) * y[1];
                 break;
-            case FITHUGHNAGUMO:
+            case FITHUGHNAGUMO: // OK
                 yp[0] = y[0] - 0.3333 * y[0] * y[0] * y[0] - y[1] + 0.875;
                 yp[1] = 0.08 * (y[0] + 0.7 - 0.8 * y[1]);
                 break;
@@ -170,8 +176,5 @@ void set_initialconditions(vector<AAF> &x, vector<AAF> &xcenter, vector<vector<A
 
 // for ODEs and DDEs: define bounds for parameters and inputs, value of delay d0 if any, and parameters of integration (timestep, order of TM)
 void init_system(OdeFunc &odef, double &t_begin, double &t_end, double &tau, double &d0, int &nb_subdiv, int &order);
-
-// specific to subdivisions
-void init_subdiv(int current_subdiv, vector<AAF> inputs_save, int param_to_subdivide);
 
 #endif

@@ -121,35 +121,3 @@ void init_system(OdeFunc &odef, double &t_begin, double &t_end, double &tau, dou
     t_print = vector<double>(nb_points);
         
 }
-
-void init_subdiv(int current_subdiv, vector<AAF> inputs_save, int param_to_subdivide)
-{
-    center_inputs = vector<AAF>(jacdim);
-    eps = vector<interval>(jacdim);
-    
-    interval save = inputs_save[param_to_subdivide].convert_int();
-    double delta = (save.sup()-save.inf())/nb_subdiv_init;
-    if ((current_subdiv > 1) && (current_subdiv < nb_subdiv_init))
-        inputs[param_to_subdivide] = interval(
-                save.inf()+delta*(current_subdiv-1-recovering),
-                save.inf()+delta*(current_subdiv+recovering
-                ));
-
-    else if (current_subdiv == 1)
-        inputs[param_to_subdivide] = interval(
-                save.inf()+delta*(current_subdiv-1),
-                save.inf()+delta*(current_subdiv+recovering
-                ));
-    else if (current_subdiv == nb_subdiv_init)
-        inputs[param_to_subdivide] = interval(
-                save.inf()+delta*(current_subdiv-1-recovering),
-                save.inf()+delta*(current_subdiv
-                ));
-    cout << "inputs[param_to_subdivide] " << inputs[param_to_subdivide] << endl;
-    
-   
-     interval   temp = inputs[param_to_subdivide].convert_int();
-        center_inputs[param_to_subdivide] = mid(temp);
-        eps[param_to_subdivide] = temp-mid(temp);
-    
-}
